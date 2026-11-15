@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1648e8">
+  <meta name="description" content="БАС — концепт магазина наушников. Найди звук для дома, города и полного погружения.">
+  <title>БАС — музыка, которую чувствуешь</title>
+  <link rel="icon" href="значок.svg" type="image/svg+xml">
+  <link rel="preload" href="материалы/Onest-600.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="стиль.css?v=8">
+  <link rel="stylesheet" href="атмосфера.css?v=9">
+  <link rel="stylesheet" href="погружение.css?v=9">
+  <link rel="stylesheet" href="комната.css?v=10">
+  <link rel="stylesheet" href="герой-в-комнате.css?v=12">
+  <script src="диагностика.js?v=10"></script>
+  <script src="сцена.js?v=12" defer></script>
+  <script type="module" src="акустическая-комната.js?v=13"></script>
+</head>
+<body>
+  <main class="screen">
+    <div class="acoustic-world" aria-hidden="true"><img class="world-backdrop" src="материалы/Акустический мир.webp" alt=""><div class="world-light"></div></div>
+    <canvas id="acoustic-depth" aria-hidden="true"></canvas>
+    <div class="scene" aria-hidden="true">
+      <div class="character-shadow"></div>
+      <video id="hero-video" muted playsinline loop preload="auto" poster="материалы/Меломан — прозрачный постер v2.png">
+        <source src="материалы/Меломан — цвет и маска.mp4" type="video/mp4">
+      </video>
+      <img class="poster" src="материалы/Меломан — прозрачный постер v2.png" alt="" fetchpriority="high">
+    </div>
+    <canvas id="bass-waves" aria-hidden="true"></canvas>
+    <div class="near-layer" aria-hidden="true"></div>
+    <audio id="bass-music" loop preload="none" src="материалы/БАС — тихий грув.wav"></audio>
+    <header class="header">
+      <a class="brand" href="./" aria-label="БАС — главная"><span class="brand-name">БАС</span><span class="brand-caption">Магазин<br>наушников</span></a>
+      <nav aria-label="Подбор наушников">
+        <button class="nav-link" data-choice="city">Для города</button>
+        <button class="nav-link" data-choice="home">Для дома</button>
+        <button class="nav-link" data-choice="games">Для игр</button>
+      </nav>
+    </header>
+    <section class="intro" aria-labelledby="hero-title">
+      <h1 id="hero-title">Музыка,<br>которую<br>чувствуешь.</h1>
+      <p>Наушники для дома, города<br>и полного погружения.</p>
+      <div class="actions">
+        <button class="primary" data-open-picker>Подобрать наушники</button>
+        <button class="replay" id="replay" aria-label="Повторить анимацию">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 10a7.7 7.7 0 1 1 .9 6.5M4.5 10V4.5M4.5 10H10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Ещё раз
+        </button>
+      </div>
+    </section>
+    <footer class="footer">
+      <span class="footnote">Слушай по-своему.</span>
+      <div class="playback-controls">
+      <button id="sound-toggle" class="sound-toggle" type="button" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path class="sound-on" d="M15 8c2 2 2 6 0 8m3-11c4 4 4 10 0 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path class="sound-off" d="m16 10 4 4m0-4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span id="sound-label">Включить звук</span>
+      </button>
+      <button id="motion-toggle" class="motion-toggle" aria-pressed="false" aria-label="Приостановить анимацию">
+        <span class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        <span id="motion-label">Поймали бас</span>
+        <svg class="pause-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3v10M11 3v10" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
+      </div>
+    </footer>
+  </main>
+  <dialog id="picker" aria-labelledby="picker-title">
+    <form method="dialog"><button class="close" aria-label="Закрыть подбор"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button></form>
+    <span class="dialog-brand">БАС</span>
+    <h2 id="picker-title">Где твоя музыка?</h2>
+    <p class="picker-lead">Выбери, где чаще слушаешь.<br>Подскажем, на что обратить внимание.</p>
+    <div class="choices" role="group" aria-label="Сценарий использования">
+      <button data-choice="city" aria-pressed="true">В городе</button>
+      <button data-choice="home" aria-pressed="false">Дома</button>
+      <button data-choice="games" aria-pressed="false">В игре</button>
+    </div>
+    <div class="recommendation" aria-live="polite"><h3 id="recommendation-title"></h3><p id="recommendation-text"></p></div>
+    <p class="study-note">Учебный концепт магазина. Подбор показывает общие ориентиры.</p>
+  </dialog>
+</body>
+</html>

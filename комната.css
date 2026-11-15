@@ -1,0 +1,4 @@
+body[data-atmosphere=waves] #acoustic-depth{z-index:-3}
+body[data-atmosphere=waves] .near-layer,body[data-atmosphere=waves] #bass-waves,body[data-atmosphere=waves] .character-shadow{display:none}
+body[data-atmosphere=waves] .scene video,body[data-atmosphere=waves] .scene img{transform-origin:73.5% 91%;transform:translate3d(var(--room-hero-x,0px),calc(-10vh + var(--room-hero-y,0px)),0) scale(var(--room-hero-scale,.88))}
+@media(max-width:760px){body[data-atmosphere=waves] .scene video,body[data-atmosphere=waves] .scene img{transform:translateX(-6%) scale(.9)}}

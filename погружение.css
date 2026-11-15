@@ -1,0 +1,19 @@
+.acoustic-world,#acoustic-depth,.near-layer{display:none;pointer-events:none}
+body[data-atmosphere=waves] .screen{background:#071a43}
+body[data-atmosphere=waves] .acoustic-world{display:block;position:absolute;inset:0;z-index:-5;overflow:hidden}
+.world-backdrop{position:absolute;inset:-2%;width:104%;height:104%;object-fit:cover;transform:translate3d(var(--far-x,0px),var(--far-y,0px),0) scale(var(--world-scale,1));will-change:transform}
+.world-light{position:absolute;inset:0;background:radial-gradient(ellipse at 75% 29%,#5da7ff66,transparent 52%),linear-gradient(115deg,transparent 48%,#97c6ff30 63%,transparent 72%);mix-blend-mode:screen;opacity:var(--light-power,.1);transform:translateX(var(--light-x,0px));will-change:opacity,transform}
+body[data-atmosphere=waves] #acoustic-depth{display:block;position:absolute;inset:0;width:100%;height:100%;z-index:-3}
+body[data-atmosphere=waves] .scene{z-index:-2}
+body[data-atmosphere=waves] .scene video,body[data-atmosphere=waves] .scene img{transform-origin:73.5% 91%;transform:translate3d(var(--hero-x,0px),calc(-10vh + var(--hero-y,0px)),0) scale(.88)}
+body[data-atmosphere=waves] .scene::after{display:none}
+.character-shadow{display:none}body[data-atmosphere=waves] .character-shadow{display:block;position:absolute;left:73.5%;top:81.7%;width:23vw;height:3.7vw;max-width:420px;max-height:65px;background:radial-gradient(ellipse,#020a20a8 0%,#020a2050 28%,transparent 70%);transform:translate(-50%,-30%) scale(var(--shadow-scale,1));opacity:var(--shadow-opacity,.9);filter:blur(2px)}
+body[data-atmosphere=waves] #bass-waves{z-index:-1}
+body[data-atmosphere=waves] .near-layer{display:block;position:absolute;inset:-2%;z-index:0;background:url('материалы/Акустический мир.webp') center/cover no-repeat;clip-path:polygon(100% 63%,96% 70%,92% 81%,87% 92%,83% 100%,100% 100%);transform:translate3d(var(--near-x,0px),var(--near-y,0px),0);will-change:transform}
+body[data-atmosphere=waves] .intro{z-index:1}
+body[data-atmosphere=waves] .header,body[data-atmosphere=waves] .footer{position:absolute;z-index:2;left:0;right:0}
+body[data-atmosphere=waves] .header{top:0}
+body[data-atmosphere=waves] .footer{left:var(--pad);right:var(--pad)}
+body[data-atmosphere=waves] .intro h1{font-size:clamp(62px,6.1vw,117px);letter-spacing:-.055em}
+@media(max-width:760px){body[data-atmosphere=waves] .scene{top:220px;height:600px}body[data-atmosphere=waves] .scene video,body[data-atmosphere=waves] .scene img{transform:translateX(-6%) scale(.9)}body[data-atmosphere=waves] .intro h1{font-size:clamp(45px,9.5vw,68px)}.world-backdrop{object-position:65% center}}
+@media(prefers-reduced-motion:reduce){.world-backdrop,.world-light,.near-layer{will-change:auto!important}}

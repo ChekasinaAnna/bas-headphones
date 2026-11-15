@@ -1,0 +1,4 @@
+body[data-atmosphere=waves] .scene video{opacity:0!important}
+body[data-atmosphere=waves].hero-in-room .scene .poster{opacity:0!important}
+body[data-atmosphere=waves]:not(.hero-in-room) .scene .poster{opacity:1!important}
+body[data-atmosphere=waves] .scene{pointer-events:none}
