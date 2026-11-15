@@ -12,7 +12,7 @@ function reportMedia(status,detail){if(location.hostname==='127.0.0.1')fetch('/_
 const atmosphere=new URLSearchParams(location.search).get('atmosphere');
 document.body.dataset.atmosphere=['waves','studio','metal'].includes(atmosphere)?atmosphere:'waves';
 if(document.body.dataset.atmosphere==='waves'){
-  video.querySelector('source').src='материалы/Меломан — цвет и маска.mp4';
+  video.querySelector('source').src='материалы/Меломан — полный кадр v16.mp4';
   video.querySelector('source').type='video/mp4';
   video.poster='материалы/Меломан — прозрачный постер v2.png';
   scene.querySelector('.poster').src=video.poster;
