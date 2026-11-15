@@ -75,10 +75,11 @@ if(renderer){
   video.addEventListener('error',loadAtlasFallback);video.querySelector('source')?.addEventListener('error',loadAtlasFallback);
   setTimeout(()=>{if(video.readyState<2||video.paused&&window.bassAnimationRunning!==false)loadAtlasFallback();},3500);
   const actorHeight=7,actorWidth=actorHeight*1280/720;
-  const actorMaterial=new THREE.ShaderMaterial({uniforms:{uVideo:{value:actorTexture},uAtlas:{value:emptyAtlas},uUseAtlas:{value:0},uRect:{value:new THREE.Vector4(0,0,1,1)},uRoomLight:{value:.02}},transparent:true,depthWrite:true,toneMapped:false,
+  // Герой — передний план: декорации и напольные волны рисуются раньше него.
+  const actorMaterial=new THREE.ShaderMaterial({uniforms:{uVideo:{value:actorTexture},uAtlas:{value:emptyAtlas},uUseAtlas:{value:0},uRect:{value:new THREE.Vector4(0,0,1,1)},uRoomLight:{value:.02}},transparent:true,depthTest:false,depthWrite:false,toneMapped:false,
     vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
     fragmentShader:'uniform sampler2D uVideo;uniform sampler2D uAtlas;uniform float uUseAtlas;uniform vec4 uRect;uniform float uRoomLight;varying vec2 vUv;void main(){float a;vec3 c;if(uUseAtlas>.5){vec4 p=texture2D(uAtlas,uRect.xy+vUv*uRect.zw);a=p.a;c=p.rgb;}else{a=texture2D(uVideo,vec2(.5+vUv.x*.5,vUv.y)).r;c=texture2D(uVideo,vec2(vUv.x*.5,vUv.y)).rgb;}if(a<.012)discard;float footShade=1.0-.14*pow(1.0-vUv.y,3.0);c*=vec3(.95,.98,1.025)*footShade;c+=vec3(.0,.009,.024)*uRoomLight;gl_FragColor=vec4(c,a);}' });
-  const actor=new THREE.Mesh(new THREE.PlaneGeometry(actorWidth,actorHeight),actorMaterial);actor.frustumCulled=false;actor.renderOrder=3;scene.add(actor);
+  const actor=new THREE.Mesh(new THREE.PlaneGeometry(actorWidth,actorHeight),actorMaterial);actor.frustumCulled=false;actor.renderOrder=1000;scene.add(actor);
   const actorFoot=new THREE.Vector3((826/1280-.5)*actorWidth,(.5-660/720)*actorHeight,0),actorOffset=new THREE.Vector3();
   const waveRings=[];for(let i=0;i<3;i++){const ring=new THREE.Mesh(new THREE.RingGeometry(1.4,1.43,128),new THREE.MeshBasicMaterial({color:0x7caeff,transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide}));ring.renderOrder=2;ring.rotation.x=-Math.PI/2;ring.position.set(3.05,-1.886,0);scene.add(ring);waveRings.push(ring);}
   let pointerX=0,pointerY=0;addEventListener('pointermove',event=>{pointerX=(event.clientX/innerWidth-.5)*2;pointerY=(event.clientY/innerHeight-.5)*2;});
@@ -91,7 +92,7 @@ if(renderer){
     renderer.render(scene,camera);
     const image=document.createElement('canvas');image.width=1600;image.height=900;image.getContext('2d').drawImage(canvas,0,0);
     renderer.setPixelRatio(dpr);renderer.setSize(currentSize.x,currentSize.y,false);camera.aspect=aspect;camera.updateProjectionMatrix();pointMaterial.uniforms.uHeight.value=innerHeight;renderer.render(scene,camera);
-    image.toBlob(blob=>{if(blob)fetch('/__bas_frame/blink?version=13',{method:'POST',headers:{'Content-Type':'image/png'},body:blob}).catch(()=>{});},'image/png');
+    image.toBlob(blob=>{if(blob)fetch('/__bas_frame/blink?version=14',{method:'POST',headers:{'Content-Type':'image/png'},body:blob}).catch(()=>{});},'image/png');
   }
   function draw(now){requestAnimationFrame(draw);if(body.dataset.atmosphere!=='waves'){renderer.clear();return;}
     const running=window.bassAnimationRunning!==false&&(!reduced.matches||body.classList.contains('motion-opt-in'));
@@ -123,7 +124,7 @@ if(renderer){
     renderer.render(scene,camera);
     if(location.hostname==='127.0.0.1'){
       if(!figmaExported&&actor.visible&&actorTime>6.25&&actorTime<6.65){figmaExported=true;exportFigmaStill();}
-      for(const [at,name] of [[.7,'start'],[4.4,'wave']])if(elapsed>=at&&!captured.has(name)){captured.add(name);canvas.toBlob(blob=>{if(blob)fetch(`/__bas_frame/${name}?version=13`,{method:'POST',headers:{'Content-Type':'image/png'},body:blob}).catch(()=>{});},'image/png');}
+      for(const [at,name] of [[.7,'start'],[3.5,'wave']])if((name==='wave'?actorTime>=at&&actorTime<at+.18:elapsed>=at)&&!captured.has(name)){captured.add(name);canvas.toBlob(blob=>{if(blob)fetch(`/__bas_frame/${name}?version=14`,{method:'POST',headers:{'Content-Type':'image/png'},body:blob}).catch(()=>{});},'image/png');}
       if(!reported&&elapsed>1.2){reported=true;fetch('/__bas_debug',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:'room-clock-running',detail:`independent time=${elapsed.toFixed(2)}; hero time=${video.currentTime.toFixed(2)}; paused=${video.paused}`,width:innerWidth,height:innerHeight})}).catch(()=>{});}
     }
   }requestAnimationFrame(draw);
